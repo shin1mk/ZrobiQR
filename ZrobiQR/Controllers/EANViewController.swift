@@ -234,7 +234,7 @@ extension EANViewController: UITextFieldDelegate {
 // MARK: - generateEAN13Code
 final class EANCodeGenerator {
     static func generateEAN13Code(from string: String, size: CGSize) -> UIImage? {
-        if let eanFilter = CIFilter(name: "CIEAN13BarcodeGenerator") {
+        if let eanFilter = CIFilter(name: "CICode128BarcodeGenerator") {
             // Оборачиваем код в NSData для предотвращения ошибки
             if let data = string.data(using: .ascii) {
                 eanFilter.setValue(data, forKey: "inputMessage")
