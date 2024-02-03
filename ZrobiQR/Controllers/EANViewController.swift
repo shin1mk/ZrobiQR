@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  EANViewController.swift
 //  ZrobiQR
 //
 //  Created by SHIN MIKHAIL on 03.02.2024.
@@ -9,20 +9,20 @@ import UIKit
 import SnapKit
 import Photos
 
-final class ViewController: UIViewController {
+final class EANViewController: UIViewController {
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Создай QR-код"
+        label.text = "EAN-13"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    private let generateQRCodeButton: UIButton = {
+    private let generateButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Создать QR-код", for: .normal)
+        button.setTitle("EAN-13", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
@@ -61,7 +61,7 @@ final class ViewController: UIViewController {
     private let shareButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
-        button.tintColor = .systemBlue  // Установим цвет иконки в белый
+        button.tintColor = .systemBlue
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -87,8 +87,8 @@ final class ViewController: UIViewController {
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(45)
         }
-        view.addSubview(generateQRCodeButton)
-        generateQRCodeButton.snp.makeConstraints { make in
+        view.addSubview(generateButton)
+        generateButton.snp.makeConstraints { make in
             make.top.equalTo(textField.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
@@ -96,7 +96,7 @@ final class ViewController: UIViewController {
         }
         view.addSubview(imageView)
         imageView.snp.makeConstraints { make in
-            make.top.equalTo(generateQRCodeButton.snp.bottom).offset(15)
+            make.top.equalTo(generateButton.snp.bottom).offset(15)
             make.centerX.equalToSuperview()
             make.width.equalToSuperview().offset(-30)
             make.height.equalTo(imageView.snp.width)
@@ -122,7 +122,7 @@ final class ViewController: UIViewController {
     // target
     private func setupTarget() {
         saveToGalleryButton.addTarget(self, action: #selector(saveToGalleryButtonTapped), for: .touchUpInside)
-        generateQRCodeButton.addTarget(self, action: #selector(generateQRCodeButtonTapped), for: .touchUpInside)
+        generateButton.addTarget(self, action: #selector(generateButtonTapped), for: .touchUpInside)
         shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
     }
     
@@ -140,7 +140,7 @@ final class ViewController: UIViewController {
         view.endEditing(true)
     }
     // generate qr
-    @objc private func generateQRCodeButtonTapped() {
+    @objc private func generateButtonTapped() {
         // Скрыть предыдущий результат
         self.imageView.image = nil
         activityIndicator.startAnimating()
@@ -149,14 +149,15 @@ final class ViewController: UIViewController {
             guard let self = self else { return }
             
             if let text = self.textField.text, !text.isEmpty,
-               let qrCodeImage = QRCodeGenerator.generateQRCode(from: text, size: CGSize(width: 1024, height: 1024)) {
+               let eanCodeImage = CodeGenerator.generateEAN13Code(from: text, size: CGSize(width: 1024, height: 1024)) {
                 // Set the new image
-                self.imageView.image = qrCodeImage
+                self.imageView.image = eanCodeImage
                 // Hide activity indicator
                 self.activityIndicator.stopAnimating()
             }
         }
     }
+
     // save
     @objc private func saveToGalleryButtonTapped() {
         guard let qrCodeImage = imageView.image else {
@@ -210,39 +211,47 @@ final class ViewController: UIViewController {
         present(activityViewController, animated: true, completion: nil)
     }
 } // end
-extension ViewController: UITextFieldDelegate {
+extension EANViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+          // Ограничение на ввод только цифр
+          let allowedCharacters = CharacterSet.decimalDigits
+          let characterSet = CharacterSet(charactersIn: string)
+          if !allowedCharacters.isSuperset(of: characterSet) {
+              return false
+          }
+          
+          // Ограничение на количество символов
+          let currentText = textField.text ?? ""
+          let newLength = currentText.count + string.count - range.length
+          return newLength <= 13
+      }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Вызываем метод generateQRCodeButtonTapped, когда нажата клавиша "Done"
-        generateQRCodeButtonTapped()
+        generateButtonTapped()
         dismissKeyboard()
         return true
     }
 }
-
-
-
-
-
-import UIKit
-
-class QRCodeGenerator {
-    static func generateQRCode(from string: String, size: CGSize) -> UIImage? {
-        if let qrFilter = CIFilter(name: "CIQRCodeGenerator") {
-            let data = string.data(using: String.Encoding.ascii)
-            qrFilter.setValue(data, forKey: "inputMessage")
-            
-            if let qrImage = qrFilter.outputImage {
-                // Устанавливаем размер изображения
-                let transform = CGAffineTransform(scaleX: size.width / qrImage.extent.size.width, y: size.height / qrImage.extent.size.height)
-                let scaledQrImage = qrImage.transformed(by: transform)
+// MARK: - generateEAN13Code
+final class CodeGenerator {
+    static func generateEAN13Code(from string: String, size: CGSize) -> UIImage? {
+        if let eanFilter = CIFilter(name: "CICode128BarcodeGenerator") {
+            // Оборачиваем код в NSData для предотвращения ошибки
+            if let data = string.data(using: .ascii) {
+                eanFilter.setValue(data, forKey: "inputMessage")
                 
-                if let cgImage = CIContext().createCGImage(scaledQrImage, from: scaledQrImage.extent) {
-                    let uiImage = UIImage(cgImage: cgImage)
-                    return uiImage
+                if let eanImage = eanFilter.outputImage, eanImage.extent.size.width > 0, eanImage.extent.size.height > 0 {
+                    // Устанавливаем размер изображения
+                    let transform = CGAffineTransform(scaleX: size.width / eanImage.extent.size.width, y: size.height / eanImage.extent.size.height)
+                    let scaledEANImage = eanImage.transformed(by: transform)
+                    
+                    if let cgImage = CIContext().createCGImage(scaledEANImage, from: scaledEANImage.extent) {
+                        let uiImage = UIImage(cgImage: cgImage)
+                        return uiImage
+                    }
                 }
             }
         }
-        
         return nil
     }
 }
