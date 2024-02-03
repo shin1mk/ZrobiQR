@@ -4,7 +4,7 @@
 //
 //  Created by SHIN MIKHAIL on 03.02.2024.
 //
-
+// любые данные
 import UIKit
 import SnapKit
 import Photos
@@ -13,7 +13,7 @@ final class QRViewController: UIViewController {
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "QR-code"
+        label.text = "QR-код"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
@@ -39,7 +39,7 @@ final class QRViewController: UIViewController {
     }()
     private let saveToGalleryButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Сохранить в галерею", for: .normal)
+        button.setTitle("Сохранить", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
@@ -149,7 +149,7 @@ final class QRViewController: UIViewController {
             guard let self = self else { return }
             
             if let text = self.textField.text, !text.isEmpty,
-               let qrCodeImage = QRCodeGenerator.generateQRCode(from: text, size: CGSize(width: 1024, height: 1024)) {
+               let qrCodeImage = QRCodeGenerator.generateQRCode(from: text, size: CGSize(width: 2048, height: 2048)) {
                 // Set the new image
                 self.imageView.image = qrCodeImage
                 // Hide activity indicator
@@ -212,7 +212,6 @@ final class QRViewController: UIViewController {
 } // end
 extension QRViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // Вызываем метод generateQRCodeButtonTapped, когда нажата клавиша "Done"
         generateButtonTapped()
         dismissKeyboard()
         return true

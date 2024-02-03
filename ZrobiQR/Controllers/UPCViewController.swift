@@ -1,19 +1,19 @@
 //
-//  EANViewController.swift
+//  UPCViewController.swift
 //  ZrobiQR
 //
 //  Created by SHIN MIKHAIL on 03.02.2024.
 //
-// 13 цифр
+// только 12 цифр
 import UIKit
 import SnapKit
 import Photos
 
-final class EANViewController: UIViewController {
+final class UPCViewController: UIViewController {
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "EAN-13"
+        label.text = "UPC-A"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
@@ -22,7 +22,7 @@ final class EANViewController: UIViewController {
     }()
     private let generateButton: UIButton = {
         let button = UIButton()
-        button.setTitle("EAN-13", for: .normal)
+        button.setTitle("UPC-A", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
@@ -31,7 +31,7 @@ final class EANViewController: UIViewController {
     }()
     private let textField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Только 13 цифр"
+        textField.placeholder = "Только 12 цифр"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
@@ -149,10 +149,10 @@ final class EANViewController: UIViewController {
             guard let self = self else { return }
             
             if let text = self.textField.text, !text.isEmpty,
-               let eanCodeImage = EANCodeGenerator.generateEAN13Code(from: text, size: CGSize(width: 2048, height: 2048)) {
-                // Set the new image
-                self.imageView.image = eanCodeImage
-                // Hide activity indicator
+               let upcCodeImage = UPCCodeGenerator.generateUPCCode(from: text, size: CGSize(width: 2048, height: 2048)) {
+                // Устанавливаем новое изображение
+                self.imageView.image = upcCodeImage
+                // Скрыть индикатор активности
                 self.activityIndicator.stopAnimating()
             }
         }
@@ -210,7 +210,7 @@ final class EANViewController: UIViewController {
         present(activityViewController, animated: true, completion: nil)
     }
 } // end
-extension EANViewController: UITextFieldDelegate {
+extension UPCViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
           // Ограничение на ввод только цифр
           let allowedCharacters = CharacterSet.decimalDigits
@@ -218,33 +218,31 @@ extension EANViewController: UITextFieldDelegate {
           if !allowedCharacters.isSuperset(of: characterSet) {
               return false
           }
-          
           // Ограничение на количество символов
           let currentText = textField.text ?? ""
           let newLength = currentText.count + string.count - range.length
-          return newLength <= 13
+          return newLength <= 12
       }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // Вызываем метод generateQRCodeButtonTapped, когда нажата клавиша "Done"
         generateButtonTapped()
         dismissKeyboard()
         return true
     }
 }
-// MARK: - generateEAN13Code
-final class EANCodeGenerator {
-    static func generateEAN13Code(from string: String, size: CGSize) -> UIImage? {
-        if let eanFilter = CIFilter(name: "CIEAN13BarcodeGenerator") {
+// MARK: - generateUPCCode
+final class UPCCodeGenerator {
+    static func generateUPCCode(from string: String, size: CGSize) -> UIImage? {
+        if let upcFilter = CIFilter(name: "CICode128BarcodeGenerator") {
             // Оборачиваем код в NSData для предотвращения ошибки
             if let data = string.data(using: .ascii) {
-                eanFilter.setValue(data, forKey: "inputMessage")
+                upcFilter.setValue(data, forKey: "inputMessage")
                 
-                if let eanImage = eanFilter.outputImage, eanImage.extent.size.width > 0, eanImage.extent.size.height > 0 {
+                if let upcImage = upcFilter.outputImage, upcImage.extent.size.width > 0, upcImage.extent.size.height > 0 {
                     // Устанавливаем размер изображения
-                    let transform = CGAffineTransform(scaleX: size.width / eanImage.extent.size.width, y: size.height / eanImage.extent.size.height)
-                    let scaledEANImage = eanImage.transformed(by: transform)
+                    let transform = CGAffineTransform(scaleX: size.width / upcImage.extent.size.width, y: size.height / upcImage.extent.size.height)
+                    let scaledUPCImage = upcImage.transformed(by: transform)
                     
-                    if let cgImage = CIContext().createCGImage(scaledEANImage, from: scaledEANImage.extent) {
+                    if let cgImage = CIContext().createCGImage(scaledUPCImage, from: scaledUPCImage.extent) {
                         let uiImage = UIImage(cgImage: cgImage)
                         return uiImage
                     }

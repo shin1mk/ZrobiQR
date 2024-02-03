@@ -25,7 +25,7 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-    private let data = ["QR-code", "EAN-13", "Элемент 3", "Элемент 4", "Элемент 5"]
+    private let data = ["QR-code", "EAN-13", "UPC-A", "Элемент 4", "Элемент 5"]
     // цикл
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,17 +69,16 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
         
         switch indexPath.row {
         case 0:
-            // Открываем QRViewController
             let qrViewController = QRViewController()
             navigationController?.pushViewController(qrViewController, animated: true)
         case 1:
-            // Открываем EANViewController
             let eanViewController = EANViewController()
             navigationController?.pushViewController(eanViewController, animated: true)
+        case 2:
+            let upcViewController = UPCViewController()
+            navigationController?.pushViewController(upcViewController, animated: true)
         default:
             print("Выбран элемент: \(data[indexPath.row])")
         }
     }
-
 }
-
