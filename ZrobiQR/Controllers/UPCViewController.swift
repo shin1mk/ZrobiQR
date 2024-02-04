@@ -99,8 +99,7 @@ final class UPCViewController: UIViewController {
         imageView.snp.makeConstraints { make in
             make.top.equalTo(generateButton.snp.bottom).offset(15)
             make.centerX.equalToSuperview()
-            make.width.equalToSuperview().offset(-30)
-            make.height.equalTo(imageView.snp.width)
+            make.width.height.equalTo(200)
         }
         view.addSubview(activityIndicator)
         activityIndicator.snp.makeConstraints { make in

@@ -1,19 +1,19 @@
 //
-//  QRViewController.swift
+//  WifiViewController.swift
 //  ZrobiQR
 //
-//  Created by SHIN MIKHAIL on 03.02.2024.
+//  Created by SHIN MIKHAIL on 04.02.2024.
 //
-// любые данные
+
 import UIKit
 import SnapKit
 import Photos
 
-final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
+final class WifiViewController: UIViewController, UIGestureRecognizerDelegate {
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Quick Response Code"
+        label.text = "Wi-Fi Response Code"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
@@ -29,13 +29,24 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
         button.backgroundColor = .systemBlue
         return button
     }()
-    private let textField: UITextField = {
+
+    private let wifiSSIDTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Введите текст"
+        textField.placeholder = "Wi-Fi SSID"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
-        textField.keyboardType = .asciiCapable // англ клавиатура
+        textField.keyboardType = .asciiCapable
+        return textField
+    }()
+
+    private let wifiPasswordTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Wi-Fi Password"
+        textField.borderStyle = .roundedRect
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.returnKeyType = .done
+        textField.keyboardType = .asciiCapable
         return textField
     }()
     private let saveToGalleryButton: UIButton = {
@@ -81,16 +92,24 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
             make.leading.equalToSuperview().offset(15)
         }
-        view.addSubview(textField)
-        textField.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+        view.addSubview(wifiSSIDTextField)
+        wifiSSIDTextField.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(15)
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
+            make.height.equalTo(45)
+        }
+        
+        view.addSubview(wifiPasswordTextField)
+        wifiPasswordTextField.snp.makeConstraints { make in
+            make.top.equalTo(wifiSSIDTextField.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(45)
         }
         view.addSubview(generateButton)
         generateButton.snp.makeConstraints { make in
-            make.top.equalTo(textField.snp.bottom).offset(15)
+            make.top.equalTo(wifiPasswordTextField.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(45)
@@ -127,7 +146,7 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     // делегат
     private func setupDelegate() {
-        textField.delegate = self
+        wifiSSIDTextField.delegate = self
     }
     // жесты
     private func setupGesture() {
@@ -145,12 +164,13 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
         // Скрыть предыдущий результат
         self.imageView.image = nil
         activityIndicator.startAnimating()
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
-            
-            if let text = self.textField.text, !text.isEmpty,
-               let qrCodeImage = QRCodeGenerator.generateQRCode(from: text, size: CGSize(width: 2048, height: 2048)) {
+
+            if let ssid = self.wifiSSIDTextField.text, !ssid.isEmpty,
+               let password = self.wifiPasswordTextField.text,
+               let qrCodeImage = WifiCodeGenerator.generateWiFiQRCode(ssid: ssid, password: password, size: CGSize(width: 2048, height: 2048)) {
                 // Set the new image
                 self.imageView.image = qrCodeImage
                 // Hide activity indicator
@@ -211,7 +231,7 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
         present(activityViewController, animated: true, completion: nil)
     }
 } // end
-extension QRViewController: UITextFieldDelegate {
+extension WifiViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         generateButtonTapped()
         dismissKeyboard()
@@ -219,23 +239,9 @@ extension QRViewController: UITextFieldDelegate {
     }
 }
 // MARK: - generateQRCode
-final class QRCodeGenerator {
-    static func generateQRCode(from string: String, size: CGSize) -> UIImage? {
-        if let qrFilter = CIFilter(name: "CIQRCodeGenerator") {
-            let data = string.data(using: String.Encoding.ascii)
-            qrFilter.setValue(data, forKey: "inputMessage")
-            
-            if let qrImage = qrFilter.outputImage {
-                // Устанавливаем размер изображения
-                let transform = CGAffineTransform(scaleX: size.width / qrImage.extent.size.width, y: size.height / qrImage.extent.size.height)
-                let scaledQrImage = qrImage.transformed(by: transform)
-                
-                if let cgImage = CIContext().createCGImage(scaledQrImage, from: scaledQrImage.extent) {
-                    let uiImage = UIImage(cgImage: cgImage)
-                    return uiImage
-                }
-            }
-        }
-        return nil
+final class WifiCodeGenerator {
+    static func generateWiFiQRCode(ssid: String, password: String, size: CGSize) -> UIImage? {
+        let wifiConfig = "WIFI:S:\(ssid);T:WPA;P:\(password);;"
+        return QRCodeGenerator.generateQRCode(from: wifiConfig, size: size)
     }
 }

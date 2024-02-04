@@ -17,6 +17,8 @@
 		13D35BAD2B6E829E00B93091 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D35BAC2B6E829E00B93091 /* MainViewController.swift */; };
 		13D35BAF2B6E8AD100B93091 /* EANViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D35BAE2B6E8AD100B93091 /* EANViewController.swift */; };
 		13D35BB12B6E90BD00B93091 /* UPCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D35BB02B6E90BD00B93091 /* UPCViewController.swift */; };
+		13F89F192B6F53A900D86685 /* WifiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F89F182B6F53A900D86685 /* WifiViewController.swift */; };
+		13F89F1B2B6F5C7F00D86685 /* VCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F89F1A2B6F5C7F00D86685 /* VCardViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		13D35BAC2B6E829E00B93091 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		13D35BAE2B6E8AD100B93091 /* EANViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EANViewController.swift; sourceTree = "<group>"; };
 		13D35BB02B6E90BD00B93091 /* UPCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UPCViewController.swift; sourceTree = "<group>"; };
+		13F89F182B6F53A900D86685 /* WifiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiViewController.swift; sourceTree = "<group>"; };
+		13F89F1A2B6F5C7F00D86685 /* VCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCardViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,8 @@
 				13CA1B372B6E46E600612C29 /* QRViewController.swift */,
 				13D35BAE2B6E8AD100B93091 /* EANViewController.swift */,
 				13D35BB02B6E90BD00B93091 /* UPCViewController.swift */,
+				13F89F182B6F53A900D86685 /* WifiViewController.swift */,
+				13F89F1A2B6F5C7F00D86685 /* VCardViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -187,8 +193,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				13CA1B382B6E46E600612C29 /* QRViewController.swift in Sources */,
+				13F89F192B6F53A900D86685 /* WifiViewController.swift in Sources */,
 				13D35BB12B6E90BD00B93091 /* UPCViewController.swift in Sources */,
 				13CA1B3E2B6E46E700612C29 /* ZrobiQR.xcdatamodeld in Sources */,
+				13F89F1B2B6F5C7F00D86685 /* VCardViewController.swift in Sources */,
 				13CA1B342B6E46E600612C29 /* AppDelegate.swift in Sources */,
 				13D35BAF2B6E8AD100B93091 /* EANViewController.swift in Sources */,
 				13CA1B362B6E46E600612C29 /* SceneDelegate.swift in Sources */,

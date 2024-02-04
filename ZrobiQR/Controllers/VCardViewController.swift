@@ -1,24 +1,69 @@
 //
-//  QRViewController.swift
+//  VCardViewController.swift
 //  ZrobiQR
 //
-//  Created by SHIN MIKHAIL on 03.02.2024.
+//  Created by SHIN MIKHAIL on 04.02.2024.
 //
-// любые данные
+
 import UIKit
 import SnapKit
 import Photos
 
-final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
+final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Quick Response Code"
+        label.text = "vCard Quick Response Code"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    private let nameTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Имя"
+        textField.borderStyle = .roundedRect
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.returnKeyType = .done
+        textField.keyboardType = .default
+        return textField
+    }()
+    private let phoneTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Номер телефона"
+        textField.borderStyle = .roundedRect
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.returnKeyType = .done
+        textField.keyboardType = .phonePad
+        return textField
+    }()
+    private let emailTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Адрес электронной почты"
+        textField.borderStyle = .roundedRect
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.returnKeyType = .done
+        textField.keyboardType = .emailAddress
+        return textField
+    }()
+    private let websiteTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Веб-сайт"
+        textField.borderStyle = .roundedRect
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.returnKeyType = .done
+        textField.keyboardType = .URL
+        return textField
+    }()
+    private let noteTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Заметка"
+        textField.borderStyle = .roundedRect
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.returnKeyType = .done
+        textField.keyboardType = .default
+        return textField
     }()
     private let generateButton: UIButton = {
         let button = UIButton()
@@ -28,15 +73,6 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
         button.layer.cornerRadius = 10
         button.backgroundColor = .systemBlue
         return button
-    }()
-    private let textField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Введите текст"
-        textField.borderStyle = .roundedRect
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.returnKeyType = .done
-        textField.keyboardType = .asciiCapable // англ клавиатура
-        return textField
     }()
     private let saveToGalleryButton: UIButton = {
         let button = UIButton()
@@ -81,16 +117,49 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
             make.leading.equalToSuperview().offset(15)
         }
-        view.addSubview(textField)
-        textField.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+        view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
+            make.leading.equalToSuperview().offset(15)
+        }
+        view.addSubview(nameTextField)
+        nameTextField.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(15)
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
+            make.height.equalTo(45)
+        }
+        view.addSubview(phoneTextField)
+        phoneTextField.snp.makeConstraints { make in
+            make.top.equalTo(nameTextField.snp.bottom).offset(15)
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
+            make.height.equalTo(45)
+        }
+        view.addSubview(emailTextField)
+        emailTextField.snp.makeConstraints { make in
+            make.top.equalTo(phoneTextField.snp.bottom).offset(15)
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
+            make.height.equalTo(45)
+        }
+        view.addSubview(websiteTextField)
+        websiteTextField.snp.makeConstraints { make in
+            make.top.equalTo(emailTextField.snp.bottom).offset(15)
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
+            make.height.equalTo(45)
+        }
+        view.addSubview(noteTextField)
+        noteTextField.snp.makeConstraints { make in
+            make.top.equalTo(websiteTextField.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(45)
         }
         view.addSubview(generateButton)
         generateButton.snp.makeConstraints { make in
-            make.top.equalTo(textField.snp.bottom).offset(15)
+            make.top.equalTo(noteTextField.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(45)
@@ -127,7 +196,7 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     // делегат
     private func setupDelegate() {
-        textField.delegate = self
+        nameTextField.delegate = self
     }
     // жесты
     private func setupGesture() {
@@ -149,10 +218,15 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
             
-            if let text = self.textField.text, !text.isEmpty,
-               let qrCodeImage = QRCodeGenerator.generateQRCode(from: text, size: CGSize(width: 2048, height: 2048)) {
-                // Set the new image
-                self.imageView.image = qrCodeImage
+            let name = self.nameTextField.text ?? ""
+            let phone = self.phoneTextField.text ?? ""
+            let email = self.emailTextField.text ?? ""
+            let website = self.websiteTextField.text ?? ""
+            let note = self.noteTextField.text ?? ""
+            
+            if let contactQRCodeImage = VCardCodeGenerator.generateContactQRCode(name: name, phone: phone, email: email, website: website, note: note, size: CGSize(width: 2048, height: 2048)) {
+                // Set the new image for contact
+                self.imageView.image = contactQRCodeImage
                 // Hide activity indicator
                 self.activityIndicator.stopAnimating()
             }
@@ -211,31 +285,30 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
         present(activityViewController, animated: true, completion: nil)
     }
 } // end
-extension QRViewController: UITextFieldDelegate {
+extension VCardViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         generateButtonTapped()
         dismissKeyboard()
         return true
     }
 }
-// MARK: - generateQRCode
-final class QRCodeGenerator {
-    static func generateQRCode(from string: String, size: CGSize) -> UIImage? {
-        if let qrFilter = CIFilter(name: "CIQRCodeGenerator") {
-            let data = string.data(using: String.Encoding.ascii)
-            qrFilter.setValue(data, forKey: "inputMessage")
-            
-            if let qrImage = qrFilter.outputImage {
-                // Устанавливаем размер изображения
-                let transform = CGAffineTransform(scaleX: size.width / qrImage.extent.size.width, y: size.height / qrImage.extent.size.height)
-                let scaledQrImage = qrImage.transformed(by: transform)
-                
-                if let cgImage = CIContext().createCGImage(scaledQrImage, from: scaledQrImage.extent) {
-                    let uiImage = UIImage(cgImage: cgImage)
-                    return uiImage
-                }
-            }
-        }
-        return nil
+// MARK: - WifiCodeGenerator
+final class VCardCodeGenerator {
+    static func generateWiFiQRCode(ssid: String, password: String, size: CGSize) -> UIImage? {
+        let wifiConfig = "WIFI:S:\(ssid);T:WPA;P:\(password);;"
+        return QRCodeGenerator.generateQRCode(from: wifiConfig, size: size)
+    }
+    
+    static func generateContactQRCode(name: String, phone: String, email: String, website: String, note: String, size: CGSize) -> UIImage? {
+        let contactVCard = "BEGIN:VCARD\n" +
+        "VERSION:3.0\n" +
+        "FN:\(name)\n" +
+        "TEL:\(phone)\n" +
+        "EMAIL:\(email)\n" +
+        "URL:\(website)\n" +
+        "NOTE:\(note)\n" +
+        "END:VCARD"
+        
+        return QRCodeGenerator.generateQRCode(from: contactVCard, size: size)
     }
 }
