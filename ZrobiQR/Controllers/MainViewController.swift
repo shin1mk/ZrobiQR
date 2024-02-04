@@ -5,29 +5,17 @@
 //  Created by SHIN MIKHAIL on 03.02.2024.
 //
 /*
- Вот несколько распространенных типов QR-кодов:
-
  Социальные медиа QR Code: Содержит ссылки на профили в социальных сетях.
  Email QR Code: Создает готовое электронное письмо для автоматической отправки.
- SMS QR Code: Генерирует готовое SMS-сообщение.
  Геолокационный QR Code: Содержит координаты местоположения.
  Событие в календаре (Calendar Event) QR Code: Содержит информацию о событии, которую можно добавить в календарь.
- PayPal QR Code: Позволяет быстро совершать платежи через сервис PayPal.
- Bitcoin QR Code: Для сканирования адреса Bitcoin для проведения транзакций.
- Аудио QR Code: Может содержать аудиофайл или текст, который может быть озвучен.
- Это некоторые из популярных видов, и существует множество других, предназначенных для различных сфер применения.
- Wi-Fi Credentials QR Code: Подобно Wi-Fi QR Code, но содержит конкретные учетные данные для подключения.
- Текстовая заметка QR Code: Содержит короткий текст или заметку.
- Skype Call QR Code: Запускает звонок через Skype.
- WhatsApp Message QR Code: Создает готовое сообщение для отправки через WhatsApp.
  Event Ticket QR Code: Содержит информацию о билете на мероприятие.
  Boarding Pass QR Code: Используется для электронных посадочных билетов.
  Health Card QR Code: Может содержать медицинскую информацию, такую как группа крови или аллергии.
  ID Card QR Code: Содержит информацию, ассоциированную с личностью, например, на рабочей карточке.
- ISBN QR Code: Для быстрого доступа к информации о книге, используя ее ISBN.
  Product Information QR Code: Содержит информацию о продукте, такую как цена, описание или ссылка на сайт.
- Coupon QR Code: Используется для получения скидок или промокодов.
- Loyalty Card QR Code: Для хранения информации о программе лояльности.
+ 
+ https://appstoreconnect.apple.com/apps/6477355052/appstore/ios/version/inflight
  */
 
 import UIKit
@@ -37,7 +25,7 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Create code"
+        label.text = "Create QR code"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
@@ -50,7 +38,7 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-    private let data = ["QR-code", "EAN-13", "UPC-A", "Wi-Fi", "VCard", "URL", "Message"]
+    private let data = ["QR code", "EAN-13 code", "UPC-A code", "Wi-Fi code", "VCard code", "URL code", "Message code"]
     // цикл
     override func viewDidLoad() {
         super.viewDidLoad()

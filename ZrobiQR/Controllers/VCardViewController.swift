@@ -13,7 +13,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "vCard Quick Response Code"
+        label.text = "vCard QR Code"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
@@ -27,7 +27,6 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
         textField.clearButtonMode = .whileEditing
-        textField.keyboardType = .asciiCapable
         return textField
     }()
     private let phoneTextField: UITextField = {
@@ -72,19 +71,19 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
     private let generateButton: UIButton = {
         let button = UIButton()
         button.setTitle("Сгенерировать", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = .systemGray6
         return button
     }()
     private let saveToGalleryButton: UIButton = {
         let button = UIButton()
         button.setTitle("Сохранить", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
-        button.backgroundColor = .systemGreen
+        button.backgroundColor = .systemGray6
         return button
     }()
     private var imageView: UIImageView = {
@@ -116,6 +115,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     // ui
     private func setupUI() {
+        view.backgroundColor = .black
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
@@ -298,11 +298,6 @@ extension VCardViewController: UITextFieldDelegate {
 }
 // MARK: - WifiCodeGenerator
 final class VCardCodeGenerator {
-    static func generateWiFiQRCode(ssid: String, password: String, size: CGSize) -> UIImage? {
-        let wifiConfig = "WIFI:S:\(ssid);T:WPA;P:\(password);;"
-        return QRCodeGenerator.generateQRCode(from: wifiConfig, size: size)
-    }
-    
     static func generateContactQRCode(name: String, phone: String, email: String, website: String, note: String, size: CGSize) -> UIImage? {
         let contactVCard = "BEGIN:VCARD\n" +
         "VERSION:3.0\n" +

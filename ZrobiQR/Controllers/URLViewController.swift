@@ -34,17 +34,8 @@ final class URLViewController: UIViewController, UIGestureRecognizerDelegate {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
         textField.clearButtonMode = .whileEditing
-        textField.keyboardType = .asciiCapable
+        //        textField.keyboardType = .asciiCapable
         return textField
-    }()
-    private let pasteButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Вставить текст", for: .normal)
-        button.setTitleColor(.systemBlue, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
-        button.backgroundColor = .systemGray6
-        return button
     }()
     private let generateButton: UIButton = {
         let button = UIButton()
@@ -86,6 +77,7 @@ final class URLViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     // ui
     private func setupUI() {
+        view.backgroundColor = .black
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
@@ -104,16 +96,9 @@ final class URLViewController: UIViewController, UIGestureRecognizerDelegate {
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(45)
         }
-        view.addSubview(pasteButton)
-        pasteButton.snp.makeConstraints { make in
-            make.top.equalTo(urlTextField.snp.bottom).offset(15)
-            make.leading.equalToSuperview().offset(15)
-            make.trailing.equalToSuperview().offset(-15)
-            make.height.equalTo(45)
-        }
         view.addSubview(generateButton)
         generateButton.snp.makeConstraints { make in
-            make.top.equalTo(pasteButton.snp.bottom).offset(15)
+            make.top.equalTo(urlTextField.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(45)
@@ -141,17 +126,10 @@ final class URLViewController: UIViewController, UIGestureRecognizerDelegate {
         saveToGalleryButton.addTarget(self, action: #selector(saveToGalleryButtonTapped), for: .touchUpInside)
         generateButton.addTarget(self, action: #selector(generateButtonTapped), for: .touchUpInside)
         shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
-        pasteButton.addTarget(self, action: #selector(pasteButtonTapped), for: .touchUpInside)
     }
     // делегат
     private func setupDelegate() {
         urlTextField.delegate = self
-    }
-    // кнопка вставить
-    @objc private func pasteButtonTapped() {
-        if let clipboardText = UIPasteboard.general.string {
-            urlTextField.text = clipboardText
-        }
     }
     // тап жест
     private func setupGesture() {
@@ -169,13 +147,13 @@ final class URLViewController: UIViewController, UIGestureRecognizerDelegate {
         // Скрыть предыдущий результат
         self.imageView.image = nil
         activityIndicator.startAnimating()
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
-
+            
             if let url = self.urlTextField.text, !url.isEmpty,
                let qrCodeImage = UrlCodeGenerator.generateUrlQRCode(url: url, size: CGSize(width: 2048, height: 2048)) {
-
+                
                 // Set the new image
                 self.imageView.image = qrCodeImage
                 // Hide activity indicator

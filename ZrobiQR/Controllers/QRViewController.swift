@@ -20,39 +20,30 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    private let generateButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Сгенерировать", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
-        button.backgroundColor = .systemBlue
-        return button
-    }()
     private let textField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Введите текст"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
-        textField.keyboardType = .asciiCapable // англ клавиатура
         textField.clearButtonMode = .whileEditing
         return textField
     }()
-    private let saveToGalleryButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Сохранить", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
-        button.backgroundColor = .systemGreen
-        return button
-    }()
+
     private var imageView: UIImageView = {
         let newImageView = UIImageView()
         newImageView.contentMode = .scaleAspectFit
         newImageView.translatesAutoresizingMaskIntoConstraints = false
         return newImageView
+    }()    
+    private let generateButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Сгенерировать", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 10
+        button.backgroundColor = .systemGray6
+        return button
     }()
     private let activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .medium)
@@ -67,6 +58,15 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
+    private let saveToGalleryButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Сохранить", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 10
+        button.backgroundColor = .systemGray6
+        return button
+    }()
     // цикл
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,6 +77,7 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     // ui
     private func setupUI() {
+        view.backgroundColor = .black
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
@@ -223,7 +224,7 @@ extension QRViewController: UITextFieldDelegate {
 final class QRCodeGenerator {
     static func generateQRCode(from string: String, size: CGSize) -> UIImage? {
         if let qrFilter = CIFilter(name: "CIQRCodeGenerator") {
-            let data = string.data(using: String.Encoding.ascii)
+            let data = string.data(using: String.Encoding.utf8)
             qrFilter.setValue(data, forKey: "inputMessage")
             
             if let qrImage = qrFilter.outputImage {

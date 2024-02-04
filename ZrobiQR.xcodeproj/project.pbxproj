@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1317BF582B6F9F69003BCCBB /* URLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1317BF572B6F9F69003BCCBB /* URLViewController.swift */; };
 		135A53B72B6FECAB009E8E84 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135A53B62B6FECAB009E8E84 /* MessageViewController.swift */; };
+		136519382B701E1B002E20CC /* ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136519372B701E1B002E20CC /* ex.swift */; };
 		13CA1B342B6E46E600612C29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13CA1B332B6E46E600612C29 /* AppDelegate.swift */; };
 		13CA1B362B6E46E600612C29 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13CA1B352B6E46E600612C29 /* SceneDelegate.swift */; };
 		13CA1B382B6E46E600612C29 /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13CA1B372B6E46E600612C29 /* QRViewController.swift */; };
@@ -26,6 +27,7 @@
 /* Begin PBXFileReference section */
 		1317BF572B6F9F69003BCCBB /* URLViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLViewController.swift; sourceTree = "<group>"; };
 		135A53B62B6FECAB009E8E84 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
+		136519372B701E1B002E20CC /* ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ex.swift; sourceTree = "<group>"; };
 		13CA1B302B6E46E600612C29 /* ZrobiQR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZrobiQR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13CA1B332B6E46E600612C29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13CA1B352B6E46E600612C29 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				13CA1B4C2B6E472200612C29 /* Application */,
 				13CA1B4B2B6E471800612C29 /* Controllers */,
 				13CA1B4A2B6E471200612C29 /* Resources */,
+				136519372B701E1B002E20CC /* ex.swift */,
 			);
 			path = ZrobiQR;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 				13F89F192B6F53A900D86685 /* WifiViewController.swift in Sources */,
 				13D35BB12B6E90BD00B93091 /* UPCViewController.swift in Sources */,
 				13CA1B3E2B6E46E700612C29 /* ZrobiQR.xcdatamodeld in Sources */,
+				136519382B701E1B002E20CC /* ex.swift in Sources */,
 				13F89F1B2B6F5C7F00D86685 /* VCardViewController.swift in Sources */,
 				13CA1B342B6E46E600612C29 /* AppDelegate.swift in Sources */,
 				1317BF582B6F9F69003BCCBB /* URLViewController.swift in Sources */,

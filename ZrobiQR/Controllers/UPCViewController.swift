@@ -23,10 +23,10 @@ final class UPCViewController: UIViewController {
     private let generateButton: UIButton = {
         let button = UIButton()
         button.setTitle("Сгенерировать", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = .systemGray6
         return button
     }()
     private let textField: UITextField = {
@@ -42,10 +42,10 @@ final class UPCViewController: UIViewController {
     private let saveToGalleryButton: UIButton = {
         let button = UIButton()
         button.setTitle("Сохранить", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
-        button.backgroundColor = .systemGreen
+        button.backgroundColor = .systemGray6
         return button
     }()
     private var imageView: UIImageView = {
@@ -77,6 +77,7 @@ final class UPCViewController: UIViewController {
     }
     // ui
     private func setupUI() {
+        view.backgroundColor = .black
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)

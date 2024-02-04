@@ -31,11 +31,11 @@ final class MessageViewController: UIViewController, UIGestureRecognizerDelegate
     }()
     private let numberField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Введите номер"
+        textField.placeholder = "Введите номер телефона"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
-        textField.keyboardType = .numberPad
+        textField.keyboardType = .phonePad
         textField.clearButtonMode = .whileEditing
         return textField
     }()
@@ -86,6 +86,7 @@ final class MessageViewController: UIViewController, UIGestureRecognizerDelegate
     }
     // ui
     private func setupUI() {
+        view.backgroundColor = .black
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
