@@ -36,6 +36,7 @@ final class EANViewController: UIViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
         textField.keyboardType = .numberPad
+        textField.clearButtonMode = .whileEditing
         return textField
     }()
     private let saveToGalleryButton: UIButton = {

@@ -1,19 +1,19 @@
 //
-//  UPCViewController.swift
+//  MessageViewController.swift
 //  ZrobiQR
 //
-//  Created by SHIN MIKHAIL on 03.02.2024.
+//  Created by SHIN MIKHAIL on 04.02.2024.
 //
-// только 12 цифр
+
 import UIKit
 import SnapKit
 import Photos
 
-final class UPCViewController: UIViewController {
+final class MessageViewController: UIViewController, UIGestureRecognizerDelegate {
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Universal Product Code-A"
+        label.text = "Message Response Code"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
@@ -29,13 +29,22 @@ final class UPCViewController: UIViewController {
         button.backgroundColor = .systemBlue
         return button
     }()
-    private let textField: UITextField = {
+    private let numberField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Только 12 цифр"
+        textField.placeholder = "Введите номер"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
         textField.keyboardType = .numberPad
+        textField.clearButtonMode = .whileEditing
+        return textField
+    }()
+    private let textField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Введите текст"
+        textField.borderStyle = .roundedRect
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.returnKeyType = .done
         textField.clearButtonMode = .whileEditing
         return textField
     }()
@@ -70,10 +79,10 @@ final class UPCViewController: UIViewController {
     // цикл
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupGesture()
         setupUI()
         setupTarget()
         setupDelegate()
-        setupGesture()
     }
     // ui
     private func setupUI() {
@@ -82,9 +91,16 @@ final class UPCViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
             make.leading.equalToSuperview().offset(15)
         }
+        view.addSubview(numberField)
+        numberField.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(15)
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
+            make.height.equalTo(45)
+        }
         view.addSubview(textField)
         textField.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.top.equalTo(numberField.snp.bottom).offset(20)
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(45)
@@ -126,17 +142,19 @@ final class UPCViewController: UIViewController {
         generateButton.addTarget(self, action: #selector(generateButtonTapped), for: .touchUpInside)
         shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
     }
-    
+    // делегат
     private func setupDelegate() {
         textField.delegate = self
+        numberField.delegate = self
     }
-    
+    // жесты
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
     }
-    
+    // закрыть клавиатуру
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
@@ -150,11 +168,16 @@ final class UPCViewController: UIViewController {
             guard let self = self else { return }
             
             if let text = self.textField.text, !text.isEmpty,
-               let upcCodeImage = UPCCodeGenerator.generateUPCCode(from: text, size: CGSize(width: 2048, height: 2048)) {
-                // Устанавливаем новое изображение
-                self.imageView.image = upcCodeImage
-                // Скрыть индикатор активности
-                self.activityIndicator.stopAnimating()
+               let number = self.numberField.text, !number.isEmpty {
+                
+                let smsText = "sms:\(number)&body=\(text)"
+                
+                if let qrCodeImage = MessageCodeGenerator.generateMessageCode(number: number, message: smsText, size: CGSize(width: 2048, height: 2048)) {
+                    // Set the new image
+                    self.imageView.image = qrCodeImage
+                    // Hide activity indicator
+                    self.activityIndicator.stopAnimating()
+                }
             }
         }
     }
@@ -211,45 +234,44 @@ final class UPCViewController: UIViewController {
         present(activityViewController, animated: true, completion: nil)
     }
 } // end
-extension UPCViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-          // Ограничение на ввод только цифр
-          let allowedCharacters = CharacterSet.decimalDigits
-          let characterSet = CharacterSet(charactersIn: string)
-          if !allowedCharacters.isSuperset(of: characterSet) {
-              return false
-          }
-          // Ограничение на количество символов
-          let currentText = textField.text ?? ""
-          let newLength = currentText.count + string.count - range.length
-          return newLength <= 12
-      }
+extension MessageViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         generateButtonTapped()
         dismissKeyboard()
         return true
     }
 }
-// MARK: - generateUPCCode
-final class UPCCodeGenerator {
-    static func generateUPCCode(from string: String, size: CGSize) -> UIImage? {
-        if let upcFilter = CIFilter(name: "CICode128BarcodeGenerator") {
-            // Оборачиваем код в NSData для предотвращения ошибки
-            if let data = string.data(using: .ascii) {
-                upcFilter.setValue(data, forKey: "inputMessage")
-                
-                if let upcImage = upcFilter.outputImage, upcImage.extent.size.width > 0, upcImage.extent.size.height > 0 {
-                    // Устанавливаем размер изображения
-                    let transform = CGAffineTransform(scaleX: size.width / upcImage.extent.size.width, y: size.height / upcImage.extent.size.height)
-                    let scaledUPCImage = upcImage.transformed(by: transform)
-                    
-                    if let cgImage = CIContext().createCGImage(scaledUPCImage, from: scaledUPCImage.extent) {
-                        let uiImage = UIImage(cgImage: cgImage)
-                        return uiImage
-                    }
-                }
-            }
+// MARK: - Обновленный код в классе QRCodeGenerator
+final class MessageCodeGenerator {
+    static func generateMessageCode(number: String, message: String, size: CGSize) -> UIImage? {
+        let fullMessage = "Номер: \(number)\nСообщение: \(message)"
+        
+        guard let data = fullMessage.data(using: .utf8) ?? fullMessage.data(using: .unicode) else {
+            print("Ошибка: Не удалось преобразовать данные в UTF-8 или Unicode.")
+            return nil
         }
-        return nil
+        
+        guard let qrFilter = CIFilter(name: "CIQRCodeGenerator") else {
+            print("Ошибка: Не удалось создать фильтр CIQRCodeGenerator.")
+            return nil
+        }
+        
+        qrFilter.setValue(data, forKey: "inputMessage")
+        
+        guard let qrImage = qrFilter.outputImage else {
+            print("Ошибка: Не удалось получить изображение QR-кода.")
+            return nil
+        }
+        
+        let transform = CGAffineTransform(scaleX: size.width / qrImage.extent.size.width, y: size.height / qrImage.extent.size.height)
+        let scaledQrImage = qrImage.transformed(by: transform)
+        
+        guard let cgImage = CIContext().createCGImage(scaledQrImage, from: scaledQrImage.extent) else {
+            print("Ошибка: Не удалось создать CGImage из QR-кода.")
+            return nil
+        }
+        
+        let uiImage = UIImage(cgImage: cgImage)
+        return uiImage
     }
 }

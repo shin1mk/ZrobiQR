@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1317BF582B6F9F69003BCCBB /* URLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1317BF572B6F9F69003BCCBB /* URLViewController.swift */; };
+		135A53B72B6FECAB009E8E84 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135A53B62B6FECAB009E8E84 /* MessageViewController.swift */; };
 		13CA1B342B6E46E600612C29 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13CA1B332B6E46E600612C29 /* AppDelegate.swift */; };
 		13CA1B362B6E46E600612C29 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13CA1B352B6E46E600612C29 /* SceneDelegate.swift */; };
 		13CA1B382B6E46E600612C29 /* QRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13CA1B372B6E46E600612C29 /* QRViewController.swift */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1317BF572B6F9F69003BCCBB /* URLViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLViewController.swift; sourceTree = "<group>"; };
+		135A53B62B6FECAB009E8E84 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		13CA1B302B6E46E600612C29 /* ZrobiQR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZrobiQR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13CA1B332B6E46E600612C29 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13CA1B352B6E46E600612C29 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -95,6 +99,8 @@
 				13D35BB02B6E90BD00B93091 /* UPCViewController.swift */,
 				13F89F182B6F53A900D86685 /* WifiViewController.swift */,
 				13F89F1A2B6F5C7F00D86685 /* VCardViewController.swift */,
+				1317BF572B6F9F69003BCCBB /* URLViewController.swift */,
+				135A53B62B6FECAB009E8E84 /* MessageViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -198,9 +204,11 @@
 				13CA1B3E2B6E46E700612C29 /* ZrobiQR.xcdatamodeld in Sources */,
 				13F89F1B2B6F5C7F00D86685 /* VCardViewController.swift in Sources */,
 				13CA1B342B6E46E600612C29 /* AppDelegate.swift in Sources */,
+				1317BF582B6F9F69003BCCBB /* URLViewController.swift in Sources */,
 				13D35BAF2B6E8AD100B93091 /* EANViewController.swift in Sources */,
 				13CA1B362B6E46E600612C29 /* SceneDelegate.swift in Sources */,
 				13D35BAD2B6E829E00B93091 /* MainViewController.swift in Sources */,
+				135A53B72B6FECAB009E8E84 /* MessageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

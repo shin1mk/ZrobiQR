@@ -36,6 +36,7 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
         textField.keyboardType = .asciiCapable // англ клавиатура
+        textField.clearButtonMode = .whileEditing
         return textField
     }()
     private let saveToGalleryButton: UIButton = {

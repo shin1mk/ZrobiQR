@@ -7,23 +7,17 @@
 /*
  Вот несколько распространенных типов QR-кодов:
 
- URL QR Code: Содержит веб-ссылку для быстрого доступа к веб-сайту.
- Текстовый QR Code: Может содержать простой текстовый блок информации.
- WiFi QR Code: Позволяет быстро подключиться к беспроводной сети Wi-Fi.
  Социальные медиа QR Code: Содержит ссылки на профили в социальных сетях.
  Email QR Code: Создает готовое электронное письмо для автоматической отправки.
  SMS QR Code: Генерирует готовое SMS-сообщение.
  Геолокационный QR Code: Содержит координаты местоположения.
- Контактные данные (vCard) QR Code: Предоставляет контактные данные, такие как имя, номер телефона и адрес электронной почты.
  Событие в календаре (Calendar Event) QR Code: Содержит информацию о событии, которую можно добавить в календарь.
  PayPal QR Code: Позволяет быстро совершать платежи через сервис PayPal.
  Bitcoin QR Code: Для сканирования адреса Bitcoin для проведения транзакций.
  Аудио QR Code: Может содержать аудиофайл или текст, который может быть озвучен.
- Ссылка на приложение (App Store / Google Play) QR Code: Ссылка для быстрого доступа к загрузке приложения.
  Это некоторые из популярных видов, и существует множество других, предназначенных для различных сфер применения.
  Wi-Fi Credentials QR Code: Подобно Wi-Fi QR Code, но содержит конкретные учетные данные для подключения.
  Текстовая заметка QR Code: Содержит короткий текст или заметку.
- Контактные данные (MeCard) QR Code: Подобно vCard, но использует немного другой формат.
  Skype Call QR Code: Запускает звонок через Skype.
  WhatsApp Message QR Code: Создает готовое сообщение для отправки через WhatsApp.
  Event Ticket QR Code: Содержит информацию о билете на мероприятие.
@@ -33,7 +27,6 @@
  ISBN QR Code: Для быстрого доступа к информации о книге, используя ее ISBN.
  Product Information QR Code: Содержит информацию о продукте, такую как цена, описание или ссылка на сайт.
  Coupon QR Code: Используется для получения скидок или промокодов.
- Virtual Business Card (MeCard) QR Code: Аналог vCard, использующий другой формат.
  Loyalty Card QR Code: Для хранения информации о программе лояльности.
  */
 
@@ -57,7 +50,7 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-    private let data = ["QR-code", "EAN-13", "UPC-A", "Wi-Fi", "VCard"]
+    private let data = ["QR-code", "EAN-13", "UPC-A", "Wi-Fi", "VCard", "URL", "Message"]
     // цикл
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,7 +107,13 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
             navigationController?.pushViewController(wifiViewController, animated: true)
         case 4:
             let vcardViewController = VCardViewController()
-            navigationController?.pushViewController(vcardViewController, animated: true)
+            navigationController?.pushViewController(vcardViewController, animated: true)        
+        case 5:
+            let urlViewController = URLViewController()
+            navigationController?.pushViewController(urlViewController, animated: true)        
+        case 6:
+            let messageViewController = MessageViewController()
+            navigationController?.pushViewController(messageViewController, animated: true)
         default:
             print("Выбран элемент: \(data[indexPath.row])")
         }

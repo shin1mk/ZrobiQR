@@ -26,7 +26,8 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
-        textField.keyboardType = .default
+        textField.clearButtonMode = .whileEditing
+        textField.keyboardType = .asciiCapable
         return textField
     }()
     private let phoneTextField: UITextField = {
@@ -36,6 +37,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
         textField.keyboardType = .phonePad
+        textField.clearButtonMode = .whileEditing
         return textField
     }()
     private let emailTextField: UITextField = {
@@ -45,6 +47,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
         textField.keyboardType = .emailAddress
+        textField.clearButtonMode = .whileEditing
         return textField
     }()
     private let websiteTextField: UITextField = {
@@ -54,6 +57,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
         textField.keyboardType = .URL
+        textField.clearButtonMode = .whileEditing
         return textField
     }()
     private let noteTextField: UITextField = {
@@ -62,7 +66,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
-        textField.keyboardType = .default
+        textField.clearButtonMode = .whileEditing
         return textField
     }()
     private let generateButton: UIButton = {

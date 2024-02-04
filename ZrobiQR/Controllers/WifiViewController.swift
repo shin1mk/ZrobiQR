@@ -37,6 +37,7 @@ final class WifiViewController: UIViewController, UIGestureRecognizerDelegate {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
         textField.keyboardType = .asciiCapable
+        textField.clearButtonMode = .whileEditing
         return textField
     }()
 
@@ -46,7 +47,7 @@ final class WifiViewController: UIViewController, UIGestureRecognizerDelegate {
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
-        textField.keyboardType = .asciiCapable
+        textField.clearButtonMode = .whileEditing
         return textField
     }()
     private let saveToGalleryButton: UIButton = {

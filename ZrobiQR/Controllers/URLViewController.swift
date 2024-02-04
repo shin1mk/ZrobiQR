@@ -1,51 +1,58 @@
 //
-//  UPCViewController.swift
+//  URLViewController.swift
 //  ZrobiQR
 //
-//  Created by SHIN MIKHAIL on 03.02.2024.
+//  Created by SHIN MIKHAIL on 04.02.2024.
 //
-// только 12 цифр
+
 import UIKit
 import SnapKit
 import Photos
 
-final class UPCViewController: UIViewController {
+final class URLViewController: UIViewController, UIGestureRecognizerDelegate {
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Universal Product Code-A"
+        label.text = "URL Response Code"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    private let generateButton: UIButton = {
+    private let shareButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Сгенерировать", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
+        button.tintColor = .systemBlue
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
-        button.backgroundColor = .systemBlue
         return button
     }()
-    private let textField: UITextField = {
+    private let urlTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Только 12 цифр"
+        textField.placeholder = "URL"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
-        textField.keyboardType = .numberPad
         textField.clearButtonMode = .whileEditing
+        textField.keyboardType = .asciiCapable
         return textField
     }()
-    private let saveToGalleryButton: UIButton = {
+    private let pasteButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Сохранить", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitle("Вставить текст", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
-        button.backgroundColor = .systemGreen
+        button.backgroundColor = .systemGray6
+        return button
+    }()
+    private let generateButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Сгенерировать", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 10
+        button.backgroundColor = .systemGray6
         return button
     }()
     private var imageView: UIImageView = {
@@ -60,20 +67,22 @@ final class UPCViewController: UIViewController {
         indicator.translatesAutoresizingMaskIntoConstraints = false
         return indicator
     }()
-    private let shareButton: UIButton = {
+    private let saveToGalleryButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "square.and.arrow.up"), for: .normal)
-        button.tintColor = .systemBlue
+        button.setTitle("Сохранить", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 10
+        button.backgroundColor = .systemGray6
         return button
     }()
     // цикл
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupGesture()
         setupUI()
         setupTarget()
         setupDelegate()
-        setupGesture()
     }
     // ui
     private func setupUI() {
@@ -82,16 +91,29 @@ final class UPCViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
             make.leading.equalToSuperview().offset(15)
         }
-        view.addSubview(textField)
-        textField.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+        view.addSubview(shareButton)
+        shareButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
+            make.trailing.equalToSuperview().offset(0)
+            make.width.equalTo(50)
+        }
+        view.addSubview(urlTextField)
+        urlTextField.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(15)
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
+            make.height.equalTo(45)
+        }
+        view.addSubview(pasteButton)
+        pasteButton.snp.makeConstraints { make in
+            make.top.equalTo(urlTextField.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(45)
         }
         view.addSubview(generateButton)
         generateButton.snp.makeConstraints { make in
-            make.top.equalTo(textField.snp.bottom).offset(15)
+            make.top.equalTo(pasteButton.snp.bottom).offset(15)
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(45)
@@ -113,30 +135,32 @@ final class UPCViewController: UIViewController {
             make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(45)
         }
-        view.addSubview(shareButton)
-        shareButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
-            make.trailing.equalToSuperview().offset(0)
-            make.width.equalTo(50)
-        }
     }
     // target
     private func setupTarget() {
         saveToGalleryButton.addTarget(self, action: #selector(saveToGalleryButtonTapped), for: .touchUpInside)
         generateButton.addTarget(self, action: #selector(generateButtonTapped), for: .touchUpInside)
         shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
+        pasteButton.addTarget(self, action: #selector(pasteButtonTapped), for: .touchUpInside)
     }
-    
+    // делегат
     private func setupDelegate() {
-        textField.delegate = self
+        urlTextField.delegate = self
     }
-    
+    // кнопка вставить
+    @objc private func pasteButtonTapped() {
+        if let clipboardText = UIPasteboard.general.string {
+            urlTextField.text = clipboardText
+        }
+    }
+    // тап жест
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
     }
-    
+    // закрыть клавиатуру
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
@@ -145,15 +169,16 @@ final class UPCViewController: UIViewController {
         // Скрыть предыдущий результат
         self.imageView.image = nil
         activityIndicator.startAnimating()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             guard let self = self else { return }
-            
-            if let text = self.textField.text, !text.isEmpty,
-               let upcCodeImage = UPCCodeGenerator.generateUPCCode(from: text, size: CGSize(width: 2048, height: 2048)) {
-                // Устанавливаем новое изображение
-                self.imageView.image = upcCodeImage
-                // Скрыть индикатор активности
+
+            if let url = self.urlTextField.text, !url.isEmpty,
+               let qrCodeImage = UrlCodeGenerator.generateUrlQRCode(url: url, size: CGSize(width: 2048, height: 2048)) {
+
+                // Set the new image
+                self.imageView.image = qrCodeImage
+                // Hide activity indicator
                 self.activityIndicator.stopAnimating()
             }
         }
@@ -211,45 +236,16 @@ final class UPCViewController: UIViewController {
         present(activityViewController, animated: true, completion: nil)
     }
 } // end
-extension UPCViewController: UITextFieldDelegate {
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-          // Ограничение на ввод только цифр
-          let allowedCharacters = CharacterSet.decimalDigits
-          let characterSet = CharacterSet(charactersIn: string)
-          if !allowedCharacters.isSuperset(of: characterSet) {
-              return false
-          }
-          // Ограничение на количество символов
-          let currentText = textField.text ?? ""
-          let newLength = currentText.count + string.count - range.length
-          return newLength <= 12
-      }
+extension URLViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         generateButtonTapped()
         dismissKeyboard()
         return true
     }
 }
-// MARK: - generateUPCCode
-final class UPCCodeGenerator {
-    static func generateUPCCode(from string: String, size: CGSize) -> UIImage? {
-        if let upcFilter = CIFilter(name: "CICode128BarcodeGenerator") {
-            // Оборачиваем код в NSData для предотвращения ошибки
-            if let data = string.data(using: .ascii) {
-                upcFilter.setValue(data, forKey: "inputMessage")
-                
-                if let upcImage = upcFilter.outputImage, upcImage.extent.size.width > 0, upcImage.extent.size.height > 0 {
-                    // Устанавливаем размер изображения
-                    let transform = CGAffineTransform(scaleX: size.width / upcImage.extent.size.width, y: size.height / upcImage.extent.size.height)
-                    let scaledUPCImage = upcImage.transformed(by: transform)
-                    
-                    if let cgImage = CIContext().createCGImage(scaledUPCImage, from: scaledUPCImage.extent) {
-                        let uiImage = UIImage(cgImage: cgImage)
-                        return uiImage
-                    }
-                }
-            }
-        }
-        return nil
+// MARK: - generateQRCode
+final class UrlCodeGenerator {
+    static func generateUrlQRCode(url: String, size: CGSize) -> UIImage? {
+        return QRCodeGenerator.generateQRCode(from: url, size: size)
     }
 }
