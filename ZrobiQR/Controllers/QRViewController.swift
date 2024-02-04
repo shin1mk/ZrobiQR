@@ -9,11 +9,11 @@ import UIKit
 import SnapKit
 import Photos
 
-final class QRViewController: UIViewController {
+final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "QR-код"
+        label.text = "Quick Response Code"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
@@ -22,7 +22,7 @@ final class QRViewController: UIViewController {
     }()
     private let generateButton: UIButton = {
         let button = UIButton()
-        button.setTitle("QR-код", for: .normal)
+        button.setTitle("Сгенерировать", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
@@ -35,6 +35,7 @@ final class QRViewController: UIViewController {
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
+        textField.keyboardType = .asciiCapable // англ клавиатура
         return textField
     }()
     private let saveToGalleryButton: UIButton = {
@@ -68,10 +69,10 @@ final class QRViewController: UIViewController {
     // цикл
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupGesture()
         setupUI()
         setupTarget()
         setupDelegate()
-        setupGesture()
     }
     // ui
     private func setupUI() {
@@ -125,17 +126,18 @@ final class QRViewController: UIViewController {
         generateButton.addTarget(self, action: #selector(generateButtonTapped), for: .touchUpInside)
         shareButton.addTarget(self, action: #selector(shareButtonTapped), for: .touchUpInside)
     }
-    
+    // делегат
     private func setupDelegate() {
         textField.delegate = self
     }
-    
+    // жесты
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
     }
-    
+    // закрыть клавиатуру
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }

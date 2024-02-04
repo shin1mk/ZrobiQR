@@ -13,7 +13,7 @@ final class EANViewController: UIViewController {
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "EAN-13"
+        label.text = "European Article Number 13"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
@@ -22,7 +22,7 @@ final class EANViewController: UIViewController {
     }()
     private let generateButton: UIButton = {
         let button = UIButton()
-        button.setTitle("EAN-13", for: .normal)
+        button.setTitle("Сгенерировать", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
@@ -35,6 +35,7 @@ final class EANViewController: UIViewController {
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
+        textField.keyboardType = .numberPad
         return textField
     }()
     private let saveToGalleryButton: UIButton = {

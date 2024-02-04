@@ -13,7 +13,7 @@ final class UPCViewController: UIViewController {
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "UPC-A"
+        label.text = "Universal Product Code-A"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
@@ -22,7 +22,7 @@ final class UPCViewController: UIViewController {
     }()
     private let generateButton: UIButton = {
         let button = UIButton()
-        button.setTitle("UPC-A", for: .normal)
+        button.setTitle("Сгенерировать", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
@@ -35,6 +35,7 @@ final class UPCViewController: UIViewController {
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
+        textField.keyboardType = .numberPad
         return textField
     }()
     private let saveToGalleryButton: UIButton = {
