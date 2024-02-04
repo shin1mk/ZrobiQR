@@ -184,6 +184,7 @@ final class MessageViewController: UIViewController, UIGestureRecognizerDelegate
                 }
             }
         }
+        dismissKeyboard(UITapGestureRecognizer())
     }
     // save
     @objc private func saveToGalleryButtonTapped() {

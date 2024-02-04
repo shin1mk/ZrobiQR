@@ -162,6 +162,7 @@ final class EANViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.activityIndicator.stopAnimating()
             }
         }
+        dismissKeyboard(UITapGestureRecognizer())
     }
     // save
     @objc private func saveToGalleryButtonTapped() {

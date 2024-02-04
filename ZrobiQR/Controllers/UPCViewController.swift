@@ -162,6 +162,7 @@ final class UPCViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.activityIndicator.stopAnimating()
             }
         }
+        dismissKeyboard(UITapGestureRecognizer())
     }
     // save
     @objc private func saveToGalleryButtonTapped() {

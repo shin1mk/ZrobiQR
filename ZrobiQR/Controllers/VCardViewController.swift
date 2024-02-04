@@ -238,6 +238,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.activityIndicator.stopAnimating()
             }
         }
+        dismissKeyboard(UITapGestureRecognizer())
     }
     // save
     @objc private func saveToGalleryButtonTapped() {

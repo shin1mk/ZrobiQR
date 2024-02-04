@@ -163,6 +163,7 @@ final class URLViewController: UIViewController, UIGestureRecognizerDelegate {
                 self.activityIndicator.stopAnimating()
             }
         }
+        dismissKeyboard(UITapGestureRecognizer())
     }
     // save
     @objc private func saveToGalleryButtonTapped() {
