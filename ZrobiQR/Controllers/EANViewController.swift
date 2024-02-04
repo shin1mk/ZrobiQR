@@ -4,12 +4,12 @@
 //
 //  Created by SHIN MIKHAIL on 03.02.2024.
 //
-// 13 цифр
+
 import UIKit
 import SnapKit
 import Photos
 
-final class EANViewController: UIViewController {
+final class EANViewController: UIViewController, UIGestureRecognizerDelegate {
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
@@ -131,15 +131,19 @@ final class EANViewController: UIViewController {
     private func setupDelegate() {
         textField.delegate = self
     }
-    
+    // жесты
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tapGesture.cancelsTouchesInView = false
+        tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
     }
-    
-    @objc private func dismissKeyboard() {
+    // закрытие клавиатуры
+    @objc private func dismissKeyboard(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
+    }
+    // Добавим метод делегата UIGestureRecognizerDelegate для точного определения касаний
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        return !(touch.view is UIControl)
     }
     // generate qr
     @objc private func generateButtonTapped() {
@@ -214,22 +218,22 @@ final class EANViewController: UIViewController {
 } // end
 extension EANViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-          // Ограничение на ввод только цифр
-          let allowedCharacters = CharacterSet.decimalDigits
-          let characterSet = CharacterSet(charactersIn: string)
-          if !allowedCharacters.isSuperset(of: characterSet) {
-              return false
-          }
-          
-          // Ограничение на количество символов
-          let currentText = textField.text ?? ""
-          let newLength = currentText.count + string.count - range.length
-          return newLength <= 13
-      }
+        // Ограничение на ввод только цифр
+        let allowedCharacters = CharacterSet.decimalDigits
+        let characterSet = CharacterSet(charactersIn: string)
+        if !allowedCharacters.isSuperset(of: characterSet) {
+            return false
+        }
+        
+        // Ограничение на количество символов
+        let currentText = textField.text ?? ""
+        let newLength = currentText.count + string.count - range.length
+        return newLength <= 13
+    }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Вызываем метод generateQRCodeButtonTapped, когда нажата клавиша "Done"
         generateButtonTapped()
-        dismissKeyboard()
+        dismissKeyboard(UITapGestureRecognizer())
         return true
     }
 }

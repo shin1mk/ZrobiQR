@@ -29,7 +29,7 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
         textField.clearButtonMode = .whileEditing
         return textField
     }()
-
+    
     private var imageView: UIImageView = {
         let newImageView = UIImageView()
         newImageView.contentMode = .scaleAspectFit
@@ -134,13 +134,16 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
     // жесты
     private func setupGesture() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tapGesture.cancelsTouchesInView = false
         tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
     }
-    // закрыть клавиатуру
-    @objc private func dismissKeyboard() {
+    // закрытие клавиатуры
+    @objc private func dismissKeyboard(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
+    }
+    // Добавим метод делегата UIGestureRecognizerDelegate для точного определения касаний
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        return !(touch.view is UIControl)
     }
     // generate qr
     @objc private func generateButtonTapped() {
@@ -216,7 +219,7 @@ final class QRViewController: UIViewController, UIGestureRecognizerDelegate {
 extension QRViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         generateButtonTapped()
-        dismissKeyboard()
+        dismissKeyboard(UITapGestureRecognizer())
         return true
     }
 }
