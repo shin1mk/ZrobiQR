@@ -22,7 +22,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
     private let nameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Имя"
+        textField.placeholder = "Ім'я"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
@@ -31,7 +31,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
     private let phoneTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Номер телефона"
+        textField.placeholder = "Номер телефону"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
@@ -41,7 +41,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
     private let emailTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Адрес электронной почты"
+        textField.placeholder = "Адреса електронної пошти"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
@@ -61,7 +61,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
     private let noteTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Заметка"
+        textField.placeholder = "Замітка"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
@@ -70,7 +70,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
     private let generateButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Сгенерировать", for: .normal)
+        button.setTitle("Створити", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
@@ -79,7 +79,7 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
     private let saveToGalleryButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Сохранить", for: .normal)
+        button.setTitle("Зберегти", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
@@ -254,12 +254,12 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
                 UIImageWriteToSavedPhotosAlbum(qrCodeImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
             case .denied:
                 print("Доступ к галерее запрещен.")
-                self.showAlert(title: "Ошибка", message: "Доступ к галерее запрещен.")
+                self.showAlert(title: "Помилка", message: "Доступ до галереї заборонено.")
             case .notDetermined:
                 print("Пользователь еще не принял решение относительно доступа к галерее.")
             case .restricted:
                 print("Доступ к галерее ограничен.")
-                self.showAlert(title: "Ошибка", message: "Доступ к галерее ограничен.")
+                self.showAlert(title: "Помилка", message: "Доступ до галереї обмежений.")
             default:
                 break
             }
@@ -267,18 +267,16 @@ final class VCardViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     // если получилось или не получилось
     @objc private func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
-        if let error = error {
-            print("Ошибка сохранения изображения в галерею: \(error.localizedDescription)")
-            self.showAlert(title: "Ой, ошибка", message: "Не удалось сохранить изображение в галерею.")
+        if error != nil {
+            self.showAlert(title: "Ой, помилка", message: "Не вдалося зберегти зображення в галерею.")
         } else {
-            print("Изображение успешно сохранено в галерею")
-            self.showAlert(title: "Отлично!", message: "Изображение успешно сохранено в галерею.")
+            self.showAlert(title: "Чудово!", message: "Зображення успішно збережено в галерею.")
         }
     }
     // алерт
     private func showAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: "Добре", style: .default, handler: nil)
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }

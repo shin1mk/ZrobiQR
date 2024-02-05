@@ -22,14 +22,14 @@ final class WifiViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
     private let generateButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Сгенерировать", for: .normal)
+        button.setTitle("Створити", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
         button.backgroundColor = .systemGray6
         return button
     }()
-
+    
     private let wifiSSIDTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Wi-Fi SSID"
@@ -40,7 +40,7 @@ final class WifiViewController: UIViewController, UIGestureRecognizerDelegate {
         textField.clearButtonMode = .whileEditing
         return textField
     }()
-
+    
     private let wifiPasswordTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Wi-Fi Password"
@@ -52,7 +52,7 @@ final class WifiViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
     private let saveToGalleryButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Сохранить", for: .normal)
+        button.setTitle("Зберегти", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
@@ -169,10 +169,10 @@ final class WifiViewController: UIViewController, UIGestureRecognizerDelegate {
         // Скрыть предыдущий результат
         self.imageView.image = nil
         activityIndicator.startAnimating()
-
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else { return }
-
+            
             if let ssid = self.wifiSSIDTextField.text, !ssid.isEmpty,
                let password = self.wifiPasswordTextField.text,
                let qrCodeImage = WifiCodeGenerator.generateWiFiQRCode(ssid: ssid, password: password, size: CGSize(width: 2048, height: 2048)) {
@@ -198,12 +198,12 @@ final class WifiViewController: UIViewController, UIGestureRecognizerDelegate {
                 UIImageWriteToSavedPhotosAlbum(qrCodeImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
             case .denied:
                 print("Доступ к галерее запрещен.")
-                self.showAlert(title: "Ошибка", message: "Доступ к галерее запрещен.")
+                self.showAlert(title: "Помилка", message: "Доступ до галереї заборонено.")
             case .notDetermined:
                 print("Пользователь еще не принял решение относительно доступа к галерее.")
             case .restricted:
                 print("Доступ к галерее ограничен.")
-                self.showAlert(title: "Ошибка", message: "Доступ к галерее ограничен.")
+                self.showAlert(title: "Помилка", message: "Доступ до галереї обмежений.")
             default:
                 break
             }
@@ -211,18 +211,16 @@ final class WifiViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     // если получилось или не получилось
     @objc private func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
-        if let error = error {
-            print("Ошибка сохранения изображения в галерею: \(error.localizedDescription)")
-            self.showAlert(title: "Ой, ошибка", message: "Не удалось сохранить изображение в галерею.")
+        if error != nil {
+            self.showAlert(title: "Ой, помилка", message: "Не вдалося зберегти зображення в галерею.")
         } else {
-            print("Изображение успешно сохранено в галерею")
-            self.showAlert(title: "Отлично!", message: "Изображение успешно сохранено в галерею.")
+            self.showAlert(title: "Чудово!", message: "Зображення успішно збережено в галерею.")
         }
     }
     // алерт
     private func showAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: "Добре", style: .default, handler: nil)
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }

@@ -22,16 +22,16 @@ final class MessageViewController: UIViewController, UIGestureRecognizerDelegate
     }()
     private let generateButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Сгенерировать", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitle("Створити", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = .systemGray6
         return button
     }()
     private let numberField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Введите номер телефона"
+        textField.placeholder = "Введіть номер телефону"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
@@ -41,7 +41,7 @@ final class MessageViewController: UIViewController, UIGestureRecognizerDelegate
     }()
     private let textField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Введите текст"
+        textField.placeholder = "Введіть текст"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.returnKeyType = .done
@@ -50,11 +50,11 @@ final class MessageViewController: UIViewController, UIGestureRecognizerDelegate
     }()
     private let saveToGalleryButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Сохранить", for: .normal)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitle("Зберегти", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 10
-        button.backgroundColor = .systemGreen
+        button.backgroundColor = .systemGray6
         return button
     }()
     private var imageView: UIImageView = {
@@ -200,12 +200,12 @@ final class MessageViewController: UIViewController, UIGestureRecognizerDelegate
                 UIImageWriteToSavedPhotosAlbum(qrCodeImage, self, #selector(self.image(_:didFinishSavingWithError:contextInfo:)), nil)
             case .denied:
                 print("Доступ к галерее запрещен.")
-                self.showAlert(title: "Ошибка", message: "Доступ к галерее запрещен.")
+                self.showAlert(title: "Помилка", message: "Доступ до галереї заборонено.")
             case .notDetermined:
                 print("Пользователь еще не принял решение относительно доступа к галерее.")
             case .restricted:
                 print("Доступ к галерее ограничен.")
-                self.showAlert(title: "Ошибка", message: "Доступ к галерее ограничен.")
+                self.showAlert(title: "Помилка", message: "Доступ до галереї обмежений.")
             default:
                 break
             }
@@ -213,18 +213,16 @@ final class MessageViewController: UIViewController, UIGestureRecognizerDelegate
     }
     // если получилось или не получилось
     @objc private func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
-        if let error = error {
-            print("Ошибка сохранения изображения в галерею: \(error.localizedDescription)")
-            self.showAlert(title: "Ой, ошибка", message: "Не удалось сохранить изображение в галерею.")
+        if error != nil {
+            self.showAlert(title: "Ой, помилка", message: "Не вдалося зберегти зображення в галерею.")
         } else {
-            print("Изображение успешно сохранено в галерею")
-            self.showAlert(title: "Отлично!", message: "Изображение успешно сохранено в галерею.")
+            self.showAlert(title: "Чудово!", message: "Зображення успішно збережено в галерею.")
         }
     }
     // алерт
     private func showAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        let okAction = UIAlertAction(title: "Добре", style: .default, handler: nil)
         alertController.addAction(okAction)
         present(alertController, animated: true, completion: nil)
     }

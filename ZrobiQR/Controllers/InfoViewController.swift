@@ -13,7 +13,7 @@ final class InfoViewController: UIViewController {
     //MARK: Properties
     private let textLabel: UILabel = {
         let label = UILabel()
-        label.text = "Это приложение предназначено для создания QR-кодов. Вот что оно делает:\n\nВы вводите текст в поле.\nНажимаете Сгенерировать.\nПриложение создает QR-код из вашего текста.\nQR-код отображается на экране\nМожете сохранить его в галерее или поделиться."
+        label.text = "Ця програма призначена для створення QR-кодів. Ось що вона робить:\n\n\nВи вводите текст у поле.\nНатискаєте Згенерувати.\nДодаток створює QR-код із вашого тексту.\nQR-код відображається на екрані\nМожете зберегти його в галереї або поділитися."
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textColor = .white
         label.numberOfLines = 0 // Для многострочного текста
@@ -21,14 +21,14 @@ final class InfoViewController: UIViewController {
     }()
     private let likeLabel: UILabel = {
         let label = UILabel()
-        label.text = "Если Вам понравилось наше приложение"
+        label.text = "Якщо Вам сподобався наш додаток:"
         label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = .white
         return label
     }()
     private let shareButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Поделиться", for: .normal)
+        button.setTitle("Поділитися", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.setTitleColor(.systemBlue, for: .normal)
         button.backgroundColor = .systemGray6
@@ -37,7 +37,7 @@ final class InfoViewController: UIViewController {
     }()
     private let rateButton: UIButton = {
         let button = UIButton()
-        button.setTitle("⭐️ Оценить", for: .normal)
+        button.setTitle("⭐️ Оцінити", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.setTitleColor(.systemBlue, for: .normal)
         button.backgroundColor = .systemGray6
@@ -46,7 +46,7 @@ final class InfoViewController: UIViewController {
     }()
     private let supportButton: UIButton = {
         let button = UIButton()
-        button.setTitle("☕️ Поддержать", for: .normal)
+        button.setTitle("☕️ Підтримати", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.setTitleColor(.systemBlue, for: .normal)
         button.backgroundColor = .systemGray6
@@ -55,7 +55,7 @@ final class InfoViewController: UIViewController {
     }()
     private let letterButton: UIButton = {
         let button = UIButton()
-        button.setTitle("✉️ Написать нам", for: .normal)
+        button.setTitle("✉️ Написати нам", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.setTitleColor(.systemBlue, for: .normal)
         button.backgroundColor = .systemGray6

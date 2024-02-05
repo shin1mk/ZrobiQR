@@ -25,7 +25,7 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
     // свойства
     private var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Create QR code"
+        label.text = "Створити QR код"
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 25)
@@ -45,7 +45,7 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-    private let data = ["QR code", "EAN-13 code", "UPC-A code", "Wi-Fi code", "VCard code", "URL code", "Message code"]
+    private let data = ["QR code", "EAN-13 code", "UPC-A code", "Wi-Fi code", "VCard code", "URL code", "SMS code"]
     // цикл
     override func viewDidLoad() {
         super.viewDidLoad()
