@@ -32,6 +32,13 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    private let infoButton: UIButton = {
+        let button = UIButton()
+        let infoImage = UIImage(systemName: "info.circle")
+        button.setImage(infoImage, for: .normal)
+        button.tintColor = .white
+        return button
+    }()
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -43,6 +50,7 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupTarget()
         setupTableView()
     }
     // метод
@@ -51,6 +59,11 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
             make.leading.equalToSuperview().offset(15)
+        }        
+        view.addSubview(infoButton)
+        infoButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
+            make.trailing.equalToSuperview().offset(-15)
         }
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
@@ -59,6 +72,15 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
             make.trailing.equalToSuperview().offset(-15)
             make.bottom.equalToSuperview()
         }
+    }
+    // setup target
+    private func setupTarget() {
+        infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
+    }
+    //
+    @objc private func infoButtonTapped() {
+        let infoViewController = InfoViewController()
+        navigationController?.pushViewController(infoViewController, animated: true)
     }
     // делегаты
     private func setupTableView() {
