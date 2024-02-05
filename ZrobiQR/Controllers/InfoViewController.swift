@@ -13,8 +13,8 @@ final class InfoViewController: UIViewController {
     //MARK: Properties
     private let textLabel: UILabel = {
         let label = UILabel()
-        label.text = "Ця програма призначена для створення QR-кодів. Ось що вона робить:\n\n\nВи вводите текст у поле.\nНатискаєте Згенерувати.\nДодаток створює QR-код із вашого тексту.\nQR-код відображається на екрані\nМожете зберегти його в галереї або поділитися."
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.text = "Ця програма призначена для створення QR-кодів. Ось що вона робить:\n\nВи вводите текст у поле.\nНатискаєте Згенерувати.\nДодаток створює QR-код із вашого тексту.\nQR-код відображається на екрані\nМожете зберегти його в галереї або поділитися."
+        label.font = UIFont.boldSystemFont(ofSize: 16)
         label.textColor = .white
         label.numberOfLines = 0 // Для многострочного текста
         return label
