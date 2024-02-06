@@ -75,7 +75,9 @@ final class ScanerViewController: UIViewController, AVCaptureMetadataOutputObjec
             captureSession.addOutput(metadataOutput)
             
             metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [.qr, .ean13, .ean8, .pdf417] // Типы кодов, которые будут сканироваться
+            // типы который сканер поймет
+            metadataOutput.metadataObjectTypes = [.qr, .ean13, .ean8, .pdf417, .upce, .code128, .code39, .aztec, .interleaved2of5, .itf14]
+
         } else {
             failed()
             return
