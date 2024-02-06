@@ -247,7 +247,7 @@ extension MessageViewController: UITextFieldDelegate {
 // MARK: - Обновленный код в классе QRCodeGenerator
 final class MessageCodeGenerator {
     static func generateMessageCode(number: String, message: String, size: CGSize) -> UIImage? {
-        let fullMessage = "Номер: \(number)\nСообщение: \(message)"
+        let fullMessage = "Number: \(number)\nMessage: \(message)"
         
         guard let data = fullMessage.data(using: .utf8) ?? fullMessage.data(using: .unicode) else {
             print("Ошибка: Не удалось преобразовать данные в UTF-8 или Unicode.")

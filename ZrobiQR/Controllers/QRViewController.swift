@@ -4,7 +4,7 @@
 //
 //  Created by SHIN MIKHAIL on 03.02.2024.
 //
-// любые данные
+
 import UIKit
 import SnapKit
 import Photos

@@ -4,19 +4,6 @@
 //
 //  Created by SHIN MIKHAIL on 03.02.2024.
 //
-/*
- Социальные медиа QR Code: Содержит ссылки на профили в социальных сетях.
- Email QR Code: Создает готовое электронное письмо для автоматической отправки.
- Геолокационный QR Code: Содержит координаты местоположения.
- Событие в календаре (Calendar Event) QR Code: Содержит информацию о событии, которую можно добавить в календарь.
- Event Ticket QR Code: Содержит информацию о билете на мероприятие.
- Boarding Pass QR Code: Используется для электронных посадочных билетов.
- Health Card QR Code: Может содержать медицинскую информацию, такую как группа крови или аллергии.
- ID Card QR Code: Содержит информацию, ассоциированную с личностью, например, на рабочей карточке.
- Product Information QR Code: Содержит информацию о продукте, такую как цена, описание или ссылка на сайт.
- 
- https://appstoreconnect.apple.com/apps/6477355052/appstore/ios/version/inflight
- */
 
 import UIKit
 import SnapKit
@@ -32,13 +19,13 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    private let infoButton: UIButton = {
-        let button = UIButton()
-        let infoImage = UIImage(systemName: "info.circle")
-        button.setImage(infoImage, for: .normal)
-        button.tintColor = .white
-        return button
-    }()
+//    private let infoButton: UIButton = {
+//        let button = UIButton()
+//        let infoImage = UIImage(systemName: "info.circle")
+//        button.setImage(infoImage, for: .normal)
+//        button.tintColor = .white
+//        return button
+//    }()
     private let tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -50,7 +37,7 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        setupTarget()
+//        setupTarget()
         setupTableView()
     }
     // метод
@@ -60,11 +47,11 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
             make.leading.equalToSuperview().offset(15)
         }        
-        view.addSubview(infoButton)
-        infoButton.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
-            make.trailing.equalToSuperview().offset(-15)
-        }
+//        view.addSubview(infoButton)
+//        infoButton.snp.makeConstraints { make in
+//            make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(0)
+//            make.trailing.equalToSuperview().offset(-15)
+//        }
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(20)
@@ -74,14 +61,14 @@ final class MainViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     // setup target
-    private func setupTarget() {
-        infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
-    }
+//    private func setupTarget() {
+//        infoButton.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
+//    }
     //
-    @objc private func infoButtonTapped() {
-        let infoViewController = InfoViewController()
-        navigationController?.pushViewController(infoViewController, animated: true)
-    }
+//    @objc private func infoButtonTapped() {
+//        let infoViewController = InfoViewController()
+//        navigationController?.pushViewController(infoViewController, animated: true)
+//    }
     // делегаты
     private func setupTableView() {
         tableView.delegate = self
