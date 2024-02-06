@@ -7,15 +7,27 @@
 
 import UIKit
 import AVFoundation
+import SnapKit
 
 final class ScanerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
     var captureSession: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
+    private let restartButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Перезапустити", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .systemGray6
+        button.layer.cornerRadius = 10
+        return button
+    }()
     // цикл
     override func viewDidLoad() {
         super.viewDidLoad()
         requestCameraAccess()
+        setupTarget()
+        setupRestartButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -77,7 +89,7 @@ final class ScanerViewController: UIViewController, AVCaptureMetadataOutputObjec
             metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
             // типы который сканер поймет
             metadataOutput.metadataObjectTypes = [.qr, .ean13, .ean8, .pdf417, .upce, .code128, .code39, .aztec, .interleaved2of5, .itf14]
-
+            
         } else {
             failed()
             return
@@ -88,6 +100,27 @@ final class ScanerViewController: UIViewController, AVCaptureMetadataOutputObjec
         previewLayer.videoGravity = .resizeAspectFill
         view.layer.addSublayer(previewLayer)
         
+        DispatchQueue.global(qos: .background).async {
+            self.captureSession.startRunning()
+        }
+    }
+    // target
+    private func setupTarget() {
+        restartButton.addTarget(self, action: #selector(restartCamera), for: .touchUpInside)
+    }
+    
+    private func setupRestartButton() {
+        view.addSubview(restartButton)
+        restartButton.layer.zPosition = 99999
+        restartButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-20)
+            make.width.equalTo(200)
+            make.height.equalTo(40)
+        }
+    }
+    // перезапуск
+    @objc private func restartCamera() {
         DispatchQueue.global(qos: .background).async {
             self.captureSession.startRunning()
         }
